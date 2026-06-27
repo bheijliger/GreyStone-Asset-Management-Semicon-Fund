@@ -30,7 +30,7 @@ st.write(
 
 initial_data = [
     {"Company": "Arm Holdings plc", "Ticker": "ARM", "Exchange": "NASDAQ", "Purchase Date": "2026-05-21"},
-    {"Company": "Taiwan Semiconductor Manufacturing Co.", "Ticker": "TSM", "Exchange": "NYSE", "Purchase Date": "2026-05-21"}
+    {"Company": "Taiwan Semiconductor Manufacturing Co.", "Ticker": "TSM", "Exchange": "NYSE", "Purchase Date": "2026-05-21"},
     {"Company": "NVIDIA Corporation", "Ticker": "NVDA", "Exchange": "NASDAQ", "Purchase Date": "2026-05-21"},
     {"Company": "Micron", "Ticker": "MU", "Exchange": "NASDAQ", "Purchase Date": "2026-05-21"},
 ]
