@@ -35,22 +35,6 @@ initial_data = [
     {"Company": "Micron Technology", "Ticker": "MU", "Exchange": "NASDAQ", "Purchase Date": "2026-05-21", "Shares": 0.00000},
 ]
 
-
-holdings_df = pd.DataFrame(initial_data)
-edited_df = st.data_editor(
-    holdings_df,
-    hide_index=True,
-    use_container_width=True,
-    column_config={
-        "Company": st.column_config.TextColumn(disabled=True),
-        "Ticker": st.column_config.TextColumn(disabled=True),
-        "Exchange": st.column_config.TextColumn(disabled=True),
-        "Purchase Date": st.column_config.DateColumn(format="YYYY-MM-DD"),
-        "Shares": st.column_config.NumberColumn(min_value=0.0, step=0.00001, format="%.5f"),
-    },
-)
-initial_data = edited_df.to_dict("records")
-
 # =========================================================
 # CACHE FUNCTION
 # =========================================================
@@ -82,8 +66,8 @@ with st.spinner("Fetching market data..."):
         company = data["Company"]
         ticker = data["Ticker"]
         exchange = data["Exchange"]
-        purchase_date_str = str(data["Purchase Date"])
-        shares = float(data["Shares"])
+        purchase_date_str = data["Purchase Date"]
+        shares = data["Shares"]
 
         try:
 
@@ -151,18 +135,22 @@ with st.spinner("Fetching market data..."):
             # Store for later
             historical_data[ticker] = hist
 
+            purchase_value = purchase_price * shares
+            current_value = current_price * shares
+            profit_loss = current_value - purchase_value
+
             # Summary results
             results.append({
                 "Company": company,
                 "Ticker": ticker,
-                "Shares": shares,
+                "Shares": f"{shares:.5f}",
                 "Exchange": exchange,
                 "Purchase Date": purchase_date_str,
                 "Purchase Price": f"${purchase_price:,.2f}",
                 "Current Price": f"${current_price:,.2f}",
-                "Investment Cost": f"${purchase_price*shares:,.2f}",
-                "Current Value": f"${current_price*shares:,.2f}",
-                "Profit/Loss": f"${(current_price-purchase_price)*shares:,.2f}",
+                "Investment Cost": f"${purchase_value:,.2f}",
+                "Current Value": f"${current_value:,.2f}",
+                "Profit/Loss": f"${profit_loss:,.2f}",
                 "Percentage Change": f"{change_percent:.2f}%"
             })
 
@@ -171,7 +159,7 @@ with st.spinner("Fetching market data..."):
             results.append({
                 "Company": company,
                 "Ticker": ticker,
-                "Shares": shares,
+                "Shares": f"{shares:.5f}",
                 "Exchange": exchange,
                 "Purchase Date": purchase_date_str,
                 "Purchase Price": "Error",
